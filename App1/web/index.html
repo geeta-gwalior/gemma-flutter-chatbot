@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <title>gemma_chatbot</title>
+
+  <!-- Updated Blob handler to strictly convert Dart structures to proper JS Uint8Array -->
+  <script>
+    window.createBlob = function(bytes, mimeType) {
+      try {
+        let array;
+        if (bytes instanceof Uint8Array) {
+          array = bytes;
+        } else if (bytes && typeof bytes === 'object' && 'buffer' in bytes) {
+          // Agar Dart ka ByteBuffer/TypedData ho
+          array = new Uint8Array(bytes.buffer);
+        } else if (Array.isArray(bytes) || (bytes && typeof bytes.length === 'number')) {
+          // Agar direct iterable ya generic List ho
+          array = Uint8Array.from(bytes);
+        } else {
+          // Fallback agar object structured wrapper hai (jaise Dart Proxy)
+          array = new Uint8Array(Object.values(bytes));
+        }
+
+        var blob = new Blob([array], { type: mimeType || 'application/octet-stream' });
+        return URL.createObjectURL(blob);
+      } catch (e) {
+        console.error("Blob creation failed inside JS:", e);
+        return null;
+      }
+    };
+  </script>
+
+  <!-- MediaPipe library -->
+  <script type="module">
+    import { FilesetResolver, LlmInference } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai@0.10.27';
+    window.FilesetResolver = FilesetResolver;
+    window.LlmInference = LlmInference;
+  </script>
+</head>
+<body>
+
+<!-- Flutter bootstrap -->
+<script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

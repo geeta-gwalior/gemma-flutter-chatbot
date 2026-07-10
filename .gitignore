@@ -1,0 +1,18 @@
+# Flutter/Dart
+App1/.dart_tool/
+App1/.flutter-plugin-dependencies
+App1/build/
+App1/android/.gradle/
+App1/android/app/build/
+App1/ios/Pods/
+App1/ios/.symlinks/
+*.iml
+.idea/
+
+# Model files (too large for GitHub, download separately from Kaggle)
+App1/assets/*.task
+App1/assets/*.bin
+App1/assets/*.tflite
+
+# macOS
+.DS_Store

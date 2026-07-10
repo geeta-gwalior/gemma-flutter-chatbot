@@ -1,0 +1,904 @@
+<!doctype html>
+
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes"
+    />
+    <meta name="theme-color" content="#4F7DC9" />
+    <meta charset="UTF-8" />
+    <title>Build Your Own Chatbot using Gemma, Flutter and MediaPipe</title>
+    <link
+      rel="stylesheet"
+      href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono"
+    />
+    <link
+      rel="stylesheet"
+      href="//fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://storage.googleapis.com/claat-public/codelab-elements.css"
+    />
+    <style>
+      .success {
+        color: #1e8e3e;
+      }
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <google-codelab-analytics
+      gaid="UA-49880327-14"
+      ga4id=""
+    ></google-codelab-analytics>
+    <google-codelab
+      codelab-gaid=""
+      codelab-ga4id=""
+      id="build-chatbot-gemma-flutter-mediapipe"
+      title="Build Your Own Chatbot using Gemma, Flutter and MediaPipe"
+      environment="web"
+      feedback-link="https://www.linkedin.com/"
+    >
+      <google-codelab-step label="About the Author" duration="1">
+        <p>
+          Welcome to this workshop! Before we start coding, let&#39;s do a quick
+          introduction.
+        </p>
+        <p>
+          <strong>Geeta Kakrani</strong> AI Consultant | GDE (Google Developer
+          Expert) in AI and AI-TPU
+        </p>
+        <ul>
+          <li>
+            20+ years of experience in technology, training, and software
+            development
+          </li>
+          <li>Founder of Kanishka IT (2010–2023)</li>
+          <li>Organizer, Google Developer Group (GDG) Gwalior (since 2019)</li>
+          <li>Google Developer Expert (GDE) in AI, since 2024</li>
+          <li>Delivered 90+ talks on Artificial Intelligence across India</li>
+          <li>
+            Trained hundreds of engineering students and professionals in Java,
+            DSA, C, C++, .NET, and AI/ML/DL/NLP
+          </li>
+        </ul>
+        <p><strong>Connect with me on LinkedIn:</strong></p>
+        <p class="image-container">
+          <img alt="Author Photo" src="img/bfe6a7843123d1b4.png" />
+        </p>
+        <p class="image-container">
+          <img alt="LinkedIn QR Code" src="img/b7587899d73cc024.png" />
+        </p>
+        <p>
+          Scan the QR code above or search &#34;Geeta Kakrani&#34; on LinkedIn
+          to connect!
+        </p>
+        <p>
+          Positive : Feel free to connect with me on LinkedIn if you have
+          questions after the workshop. I&#39;m always happy to help beginners
+          get started with AI.
+        </p>
+      </google-codelab-step>
+
+      <google-codelab-step label="What You Will Build" duration="1">
+        <p>
+          In this codelab, you will build a
+          <strong>simple AI chatbot app</strong> that runs directly on a mobile
+          device — no internet or server needed! This is called
+          <strong>on-device AI</strong>.
+        </p>
+        <p>You will use:</p>
+        <ul>
+          <li>
+            <strong>Flutter</strong> – to build the mobile app (works on Android
+            and iOS)
+          </li>
+          <li>
+            <strong>Gemma</strong> – Google&#39;s small, open AI model that can
+            run on-device
+          </li>
+          <li>
+            <strong>MediaPipe</strong> – Google&#39;s framework that helps you
+            run Gemma easily inside your app
+          </li>
+        </ul>
+        <p>
+          By the end of this workshop, you will have a working chatbot app on
+          your phone or emulator that can answer questions — completely offline!
+        </p>
+        <h2 is-upgraded>What You Will Learn</h2>
+        <ul>
+          <li>How to install Flutter on your computer</li>
+          <li>What Gemma is and why it is special</li>
+          <li>What MediaPipe is and how it helps run AI models</li>
+          <li>How to create a Flutter project</li>
+          <li>How to connect Gemma with your Flutter app using MediaPipe</li>
+          <li>How to build a simple chat UI</li>
+          <li>How to test your chatbot</li>
+        </ul>
+        <h2 is-upgraded>What You Need</h2>
+        <ul>
+          <li>A laptop (Windows, macOS, or Linux)</li>
+          <li>
+            Internet connection (only for downloading tools, not for running the
+            chatbot)
+          </li>
+          <li>
+            Basic idea of programming (any language is fine, even if you are a
+            beginner)
+          </li>
+          <li>Around 4 GB of free storage space (for the AI model file)</li>
+        </ul>
+        <p>Let&#39;s get started!</p>
+      </google-codelab-step>
+
+      <google-codelab-step label="Step 1: Install Flutter" duration="1">
+        <p>
+          Flutter is a free tool made by Google that lets you build apps for
+          Android, iOS, Web, and Desktop — all using one codebase.
+        </p>
+        <h2 is-upgraded>Step 1.1: Download Flutter SDK</h2>
+        <ol type="1">
+          <li>
+            Go to the official Flutter website:
+            <a href="https://flutter.dev" target="_blank"
+              >https://flutter.dev</a
+            >
+          </li>
+          <li>Click on <strong>Get Started</strong></li>
+          <li>Choose your operating system (Windows / macOS / Linux)</li>
+          <li>Download the Flutter SDK zip file</li>
+        </ol>
+        <h2 is-upgraded>Step 1.2: Extract Flutter</h2>
+        <p><strong>On Windows:</strong></p>
+        <ol type="1">
+          <li>
+            Extract the zip file to a folder, for example:
+            <code>C:\src\flutter</code>
+          </li>
+          <li>
+            Do <strong>not</strong> install Flutter in a folder that needs
+            special permissions, like <code>C:\Program Files\</code>
+          </li>
+        </ol>
+        <p><strong>On macOS/Linux:</strong></p>
+        <pre><code language="language-bash" class="language-bash">cd ~/development
+unzip ~/Downloads/flutter_macos_*.zip
+</code></pre>
+        <h2 is-upgraded>Step 1.3: Add Flutter to PATH</h2>
+        <p><strong>On Windows:</strong></p>
+        <ol type="1">
+          <li>Search for &#34;Environment Variables&#34; in the Start menu</li>
+          <li>Click <strong>Edit the system environment variables</strong></li>
+          <li>Click <strong>Environment Variables</strong></li>
+          <li>
+            Under &#34;User variables&#34;, select <strong>Path</strong>, click
+            <strong>Edit</strong>
+          </li>
+          <li>
+            Click <strong>New</strong>, and add the path to
+            <code>flutter\bin</code>
+          </li>
+          <li>Click OK on all windows</li>
+        </ol>
+        <p>
+          <strong>On macOS/Linux:</strong> Add this line to your
+          <code>~/.bashrc</code> or <code>~/.zshrc</code> file:
+        </p>
+        <pre><code language="language-bash" class="language-bash">export PATH=&#34;$PATH:`pwd`/flutter/bin&#34;
+</code></pre>
+        <p>Then run:</p>
+        <pre><code language="language-bash" class="language-bash">source ~/.zshrc
+</code></pre>
+        <h2 is-upgraded>Step 1.4: Verify Installation</h2>
+        <p>Open a terminal or command prompt and run:</p>
+        <pre><code language="language-bash" class="language-bash">flutter doctor
+</code></pre>
+        <p>
+          This command checks your system and tells you if anything else needs
+          to be installed (like Android Studio, Xcode, or a device).
+        </p>
+        <p>
+          Positive : If you see some ❌ marks, don&#39;t worry! Just follow the
+          instructions shown by <code>flutter doctor</code> to fix them one by
+          one.
+        </p>
+        <h2 is-upgraded>Step 1.5: Install an IDE</h2>
+        <p>Install one of these code editors:</p>
+        <ul>
+          <li>
+            <strong>Android Studio</strong> –
+            <a href="https://developer.android.com/studio" target="_blank"
+              >https://developer.android.com/studio</a
+            >
+          </li>
+          <li>
+            <strong>VS Code</strong> –
+            <a href="https://code.visualstudio.com" target="_blank"
+              >https://code.visualstudio.com</a
+            >
+          </li>
+        </ul>
+        <p>
+          After installing, add the <strong>Flutter</strong> and
+          <strong>Dart</strong> plugins/extensions from the IDE&#39;s
+          marketplace.
+        </p>
+        <h2 is-upgraded>Step 1.6: Set Up an Emulator or Device</h2>
+        <ul>
+          <li>
+            If using Android Studio, open <strong>Device Manager</strong> and
+            create a new virtual device
+          </li>
+          <li>
+            Or, connect your real Android phone using a USB cable with
+            <strong>USB Debugging</strong> turned on
+          </li>
+        </ul>
+        <p>To check connected devices, run:</p>
+        <pre><code language="language-bash" class="language-bash">flutter devices
+</code></pre>
+      </google-codelab-step>
+
+      <google-codelab-step label="Step 2: What is Gemma?" duration="1">
+        <p>
+          <strong>Gemma</strong> is a family of small, lightweight, open AI
+          models built by Google, using the same research and technology used to
+          build the larger <strong>Gemini</strong> models.
+        </p>
+        <h2 is-upgraded>Why Gemma is Special</h2>
+        <ul>
+          <li>
+            <strong>Open Model</strong>: You can download it and use it for
+            free, even for building your own apps
+          </li>
+          <li>
+            <strong>Small Size</strong>: Unlike huge AI models that need
+            powerful servers, Gemma comes in small sizes (like 2B, or even
+            smaller variants) that can run on a phone or laptop
+          </li>
+          <li>
+            <strong>On-Device</strong>: Because it is small, Gemma can run
+            directly on your mobile device — no internet needed after
+            downloading the model
+          </li>
+          <li>
+            <strong>Privacy Friendly</strong>: Since everything runs on the
+            device, your chat data never leaves your phone
+          </li>
+          <li>
+            <strong>Fast</strong>: No network delay, so responses can be quick
+          </li>
+        </ul>
+        <h2 is-upgraded>Where Gemma Comes From</h2>
+        <p>Gemma models are available on:</p>
+        <ul>
+          <li>
+            <strong>Kaggle Models</strong>:
+            <a href="https://www.kaggle.com/models/google/gemma" target="_blank"
+              >https://www.kaggle.com/models/google/gemma</a
+            >
+          </li>
+          <li>
+            <strong>Hugging Face</strong>:
+            <a href="https://huggingface.co/google" target="_blank"
+              >https://huggingface.co/google</a
+            >
+          </li>
+        </ul>
+        <h2 is-upgraded>Gemma Variants for Mobile</h2>
+        <p>
+          For this workshop, we will use a version of Gemma that is specially
+          converted into <code>.task</code> or <code>.bin</code> format so it
+          can run efficiently on mobile devices using MediaPipe. This format is
+          optimized to be fast and small enough to run on a phone.
+        </p>
+        <p>
+          Positive : Think of Gemma like a &#34;mini brain&#34; that fits inside
+          your pocket device, ready to chat with you anytime, even without
+          internet!
+        </p>
+      </google-codelab-step>
+
+      <google-codelab-step label="Step 3: What is MediaPipe?" duration="1">
+        <p>
+          <strong>MediaPipe</strong> is a free, open-source framework built by
+          Google that makes it easy for developers to add AI features (like face
+          detection, hand tracking, or now, even chatbots) into their apps.
+        </p>
+        <h2 is-upgraded>Why We Use MediaPipe</h2>
+        <p>
+          Running an AI model like Gemma directly on a phone is not simple — you
+          need to manage things like memory, model loading, and generating text
+          token by token.
+          <strong>MediaPipe takes care of all this hard work for us.</strong>
+        </p>
+        <p>
+          MediaPipe provides a ready-made solution called the
+          <strong>MediaPipe LLM Inference API</strong>, which allows developers
+          to:
+        </p>
+        <ul>
+          <li>Load a Gemma model file into an app</li>
+          <li>Send a text prompt (question) to the model</li>
+          <li>Get a text response back</li>
+          <li>Do all of this <strong>on-device</strong>, without any server</li>
+        </ul>
+        <h2 is-upgraded>How MediaPipe Fits with Flutter and Gemma</h2>
+        <p>Here is the simple flow of our chatbot app:</p>
+        <pre><code>User types a message in Flutter app
+        ↓
+Flutter app sends the message to MediaPipe LLM Inference API
+        ↓
+MediaPipe runs the Gemma model on the device
+        ↓
+Gemma generates a text response
+        ↓
+MediaPipe sends the response back to Flutter
+        ↓
+Flutter app shows the response in the chat screen
+</code></pre>
+        <p>
+          MediaPipe provides a Flutter plugin called
+          <strong><code>flutter_gemma</code></strong> which connects Flutter
+          directly to the MediaPipe LLM Inference API. This is the plugin we
+          will use in this workshop.
+        </p>
+      </google-codelab-step>
+
+      <google-codelab-step
+        label="Step 4: Create a New Flutter Project"
+        duration="1"
+      >
+        <p>Now let&#39;s start building! Open your terminal and run:</p>
+        <pre><code language="language-bash" class="language-bash">flutter create gemma_chatbot
+cd gemma_chatbot
+</code></pre>
+        <p>
+          This creates a new Flutter project called
+          <code>gemma_chatbot</code> with a default sample app.
+        </p>
+        <h2 is-upgraded>Test the Default App</h2>
+        <p>Connect a device or start an emulator, then run:</p>
+        <pre><code language="language-bash" class="language-bash">flutter run
+</code></pre>
+        <p>
+          You should see a simple counter app. This confirms your Flutter setup
+          is working correctly.
+        </p>
+      </google-codelab-step>
+
+      <google-codelab-step
+        label="Step 5: Add the flutter_gemma Package"
+        duration="1"
+      >
+        <p>
+          Open the file <code>pubspec.yaml</code> in your project and add the
+          <code>flutter_gemma</code> package under dependencies:
+        </p>
+        <pre><code language="language-yaml" class="language-yaml">dependencies:
+  flutter:
+    sdk: flutter
+  flutter_gemma: ^0.2.0
+</code></pre>
+        <p>
+          Note : Always check
+          <a href="https://pub.dev/packages/flutter_gemma" target="_blank"
+            >pub.dev/packages/flutter_gemma</a
+          >
+          for the latest version number before adding it.
+        </p>
+        <p>Now run this command in your terminal to download the package:</p>
+        <pre><code language="language-bash" class="language-bash">flutter pub get
+</code></pre>
+      </google-codelab-step>
+
+      <google-codelab-step
+        label="Step 6: Download the Gemma Model"
+        duration="1"
+      >
+        <ol type="1">
+          <li>
+            Go to Kaggle Models:
+            <a href="https://www.kaggle.com/models/google/gemma" target="_blank"
+              >https://www.kaggle.com/models/google/gemma</a
+            >
+          </li>
+          <li>Sign in with your Google account</li>
+          <li>
+            Search for a small Gemma variant meant for mobile, in
+            <code>.task</code> format (for example,
+            <strong>Gemma 3 1B IT, int4 quantized</strong>, converted for
+            MediaPipe)
+          </li>
+          <li>Accept the license terms</li>
+          <li>
+            Download the <code>.task</code> model file to your computer — for
+            this workshop, keep the file name as
+            <code>gemma3-1B-it-int4.task</code>
+          </li>
+        </ol>
+        <p>
+          Positive : The model file can be large (several hundred MB to a few
+          GB). Make sure you have a stable internet connection and enough
+          storage before downloading. Smaller, quantized (int4) models load
+          faster and use less memory on the device.
+        </p>
+        <p>
+          We will add this model file into our Flutter project&#39;s
+          <code>assets</code> folder in the next step, when we build the
+          <code>GemmaService</code> class.
+        </p>
+      </google-codelab-step>
+
+      <google-codelab-step label="Step 7: Build the Chat UI" duration="1">
+        <p>
+          Now let&#39;s build a simple chat screen. Open
+          <code>lib/main.dart</code> and replace all the content with this:
+        </p>
+        <pre><code language="language-dart" class="language-dart">import &#39;package:flutter/material.dart&#39;;
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;Gemma Chatbot&#39;,
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      home: const ChatScreen(),
+    );
+  }
+}
+
+class ChatMessage {
+  final String text;
+  final bool isUser;
+  ChatMessage(this.text, this.isUser);
+}
+
+class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
+
+  @override
+  State&lt;ChatScreen&gt; createState() =&gt; _ChatScreenState();
+}
+
+class _ChatScreenState extends State&lt;ChatScreen&gt; {
+  final TextEditingController _controller = TextEditingController();
+  final List&lt;ChatMessage&gt; _messages = [];
+  bool _isLoading = false;
+
+  void _sendMessage() {
+    final text = _controller.text.trim();
+    if (text.isEmpty) return;
+
+    setState(() {
+      _messages.add(ChatMessage(text, true));
+      _isLoading = true;
+    });
+    _controller.clear();
+
+    // We will connect this to Gemma in the next step
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(&#39;Gemma Chatbot&#39;)),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(12),
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                final msg = _messages[index];
+                return Align(
+                  alignment: msg.isUser
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 4),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: msg.isUser
+                          ? Colors.deepPurple.shade100
+                          : Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(msg.text),
+                  ),
+                );
+              },
+            ),
+          ),
+          if (_isLoading) const LinearProgressIndicator(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      hintText: &#39;Type your message...&#39;,
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: _sendMessage,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+</code></pre>
+        <p>Run the app to check the UI:</p>
+        <pre><code language="language-bash" class="language-bash">flutter run
+</code></pre>
+        <p>
+          You should now see a chat screen with a text box and a send button,
+          though it doesn&#39;t talk to Gemma yet. We&#39;ll fix that next!
+        </p>
+      </google-codelab-step>
+
+      <google-codelab-step
+        label="Step 8: Create a GemmaService Class"
+        duration="1"
+      >
+        <p>
+          Instead of writing all the Gemma logic directly inside our chat
+          screen, we will create a separate helper class called
+          <code>GemmaService</code>. This keeps our code clean and easy to
+          understand.
+        </p>
+        <h2 is-upgraded>Step 8.1: Add the MediaPipe Engine Package</h2>
+        <p>
+          Open <code>pubspec.yaml</code> and add one more dependency, along with
+          the <code>flutter_gemma</code> package we added earlier:
+        </p>
+        <pre><code language="language-yaml" class="language-yaml">dependencies:
+  flutter:
+    sdk: flutter
+  flutter_gemma: ^0.2.0
+  flutter_gemma_mediapipe: ^0.2.0
+</code></pre>
+        <p>Run:</p>
+        <pre><code language="language-bash" class="language-bash">flutter pub get
+</code></pre>
+        <h2 is-upgraded>Step 8.2: Add the Model as an Asset</h2>
+        <p>
+          For this workshop, we will load the model directly from the app&#39;s
+          assets folder.
+        </p>
+        <ol type="1">
+          <li>
+            Create a folder named <code>assets</code> in your project root (if
+            not already created)
+          </li>
+          <li>
+            Copy your <code>.task</code> model file into it, for example:
+            <code>assets/gemma3-1B-it-int4.task</code>
+          </li>
+          <li>In <code>pubspec.yaml</code>, add:</li>
+        </ol>
+        <pre><code language="language-yaml" class="language-yaml">flutter:
+  assets:
+    - assets/gemma3-1B-it-int4.task
+</code></pre>
+        <p>
+          Positive : Make sure the model file name in
+          <code>pubspec.yaml</code> exactly matches the file name in your
+          <code>assets</code> folder, otherwise the app will not find it.
+        </p>
+        <h2 is-upgraded>Step 8.3: Create gemma_service.dart</h2>
+        <p>
+          Create a new file at <code>lib/gemma_service.dart</code> and add this
+          code:
+        </p>
+        <pre><code language="language-dart" class="language-dart">import &#39;package:flutter_gemma/flutter_gemma.dart&#39;;
+import &#39;package:flutter_gemma_mediapipe/flutter_gemma_mediapipe.dart&#39;;
+
+class GemmaService {
+  bool isModelLoaded = false;
+  dynamic _chat;
+
+  Future&lt;void&gt; loadModel() async {
+    try {
+      await FlutterGemma.initialize(
+        inferenceEngines: [MediaPipeEngine()],
+        webStorageMode: WebStorageMode.none,
+      );
+
+      await FlutterGemma.installModel(
+        modelType: ModelType.gemma4,
+      ).fromAsset(&#39;assets/gemma3-1B-it-int4.task&#39;).install();
+
+      final model = await FlutterGemma.getActiveModel(maxTokens: 2048);
+      _chat = await model.createChat();
+
+      isModelLoaded = true;
+    } catch (e) {
+      print(&#34;Model load error: $e&#34;);
+      isModelLoaded = false;
+    }
+  }
+
+  Future&lt;String&gt; getResponse(String userMessage) async {
+    if (!isModelLoaded || _chat == null) {
+      return &#34;Model is loading...&#34;;
+    }
+    try {
+      await _chat.addQueryChunk(Message.text(text: userMessage, isUser: true));
+      final response = await _chat.generateChatResponse();
+
+      if (response == null) return &#34;No response generated.&#34;;
+
+      // 1. First check if it directly has a .textResponse property
+      try {
+        if ((response as dynamic).textResponse != null) {
+          return (response as dynamic).textResponse.toString();
+        }
+      } catch (_) {}
+
+      // 2. If not, extract the string from between TextResponse(&#34;...&#34;)
+      String rawString = response.toString();
+      if (rawString.startsWith(&#39;TextResponse(&#34;&#39;) &amp;&amp; rawString.endsWith(&#39;&#34;)&#39;)) {
+        return rawString.substring(14, rawString.length - 2);
+      } else if (rawString.startsWith(&#39;TextResponse(&#39;) &amp;&amp; rawString.endsWith(&#39;)&#39;)) {
+        return rawString.substring(13, rawString.length - 1);
+      }
+
+      return rawString;
+    } catch (e) {
+      return &#34;Error: $e&#34;;
+    }
+  }
+}
+</code></pre>
+        <h2 is-upgraded>What This Code Does</h2>
+        <ul>
+          <li>
+            <code>loadModel()</code> sets up the MediaPipe engine, installs the
+            Gemma model from our app&#39;s assets, and creates a chat session.
+            It sets <code>isModelLoaded = true</code> once everything is ready.
+          </li>
+          <li>
+            <code>getResponse()</code> sends the user&#39;s message to Gemma
+            using <code>addQueryChunk</code>, then asks for a reply using
+            <code>generateChatResponse()</code>. Since the response object&#39;s
+            exact shape can vary, the code carefully checks for a
+            <code>.textResponse</code> field first, and falls back to cleaning
+            up the raw text if needed.
+          </li>
+        </ul>
+        <p>
+          Note : This kind of defensive parsing (checking multiple possible
+          response formats) is a good habit when working with fast-evolving AI
+          packages, since exact return types can change between versions.
+        </p>
+      </google-codelab-step>
+
+      <google-codelab-step
+        label="Step 9: Connect GemmaService to the Chat Screen"
+        duration="1"
+      >
+        <p>
+          Now let&#39;s wire our <code>GemmaService</code> into the chat UI we
+          built in Step 7.
+        </p>
+        <h2 is-upgraded>Step 9.1: Import and Create the Service</h2>
+        <p>At the top of <code>lib/main.dart</code>, add:</p>
+        <pre><code language="language-dart" class="language-dart">import &#39;gemma_service.dart&#39;;
+</code></pre>
+        <p>
+          Inside <code>_ChatScreenState</code>, replace the earlier model
+          variables with:
+        </p>
+        <pre><code language="language-dart" class="language-dart">final GemmaService _gemmaService = GemmaService();
+bool _isModelReady = false;
+
+@override
+void initState() {
+  super.initState();
+  _initModel();
+}
+
+Future&lt;void&gt; _initModel() async {
+  await _gemmaService.loadModel();
+  setState(() {
+    _isModelReady = _gemmaService.isModelLoaded;
+  });
+}
+</code></pre>
+        <h2 is-upgraded>Step 9.2: Send Message and Show Gemma&#39;s Reply</h2>
+        <p>Update the <code>_sendMessage</code> function like this:</p>
+        <pre><code language="language-dart" class="language-dart">Future&lt;void&gt; _sendMessage() async {
+  final text = _controller.text.trim();
+  if (text.isEmpty || !_isModelReady) return;
+
+  setState(() {
+    _messages.add(ChatMessage(text, true));
+    _isLoading = true;
+  });
+  _controller.clear();
+
+  final response = await _gemmaService.getResponse(text);
+
+  setState(() {
+    _messages.add(ChatMessage(response, false));
+    _isLoading = false;
+  });
+}
+</code></pre>
+        <h2 is-upgraded>
+          Step 9.3: Show a Loading Title Until the Model is Ready
+        </h2>
+        <p>Update your <code>AppBar</code> to show model status:</p>
+        <pre><code language="language-dart" class="language-dart">appBar: AppBar(
+  title: Text(_isModelReady ? &#39;Gemma Chatbot&#39; : &#39;Loading model...&#39;),
+),
+</code></pre>
+        <p>
+          Positive : The first time the model loads, it may take a few seconds
+          to a minute, depending on your device. This is normal — the model file
+          is being read into memory and a chat session is being created.
+        </p>
+      </google-codelab-step>
+
+      <google-codelab-step
+        label="Step 10: Run and Test Your Chatbot"
+        duration="1"
+      >
+        <ol type="1">
+          <li>
+            Make sure the model file is pushed to your device (Step 6, Option B)
+          </li>
+          <li>Run the app:</li>
+        </ol>
+        <pre><code language="language-bash" class="language-bash">flutter run
+</code></pre>
+        <ol type="1" start="3">
+          <li>
+            Wait for the AppBar title to change from &#34;Loading model...&#34;
+            to &#34;Gemma Chatbot&#34;
+          </li>
+          <li>Type a simple question, like:</li>
+        </ol>
+        <pre><code>What is the capital of India?
+</code></pre>
+        <ol type="1" start="5">
+          <li>Tap the send button and wait for the response</li>
+        </ol>
+        <p>
+          Positive : Congratulations! If you see a reply, your on-device AI
+          chatbot is working! 🎉
+        </p>
+        <h2 is-upgraded>Things to Try Next</h2>
+        <ul>
+          <li>Ask the chatbot to write a short poem</li>
+          <li>Ask it a simple coding question</li>
+          <li>
+            Try short factual questions and see how accurate the answers are
+          </li>
+          <li>
+            Turn on Airplane Mode and try again — it should still work, since
+            everything runs on-device!
+          </li>
+        </ul>
+      </google-codelab-step>
+
+      <google-codelab-step label="Step 11: Troubleshooting Tips" duration="1">
+        <table>
+          <tr>
+            <td colspan="1" rowspan="1"><p>Problem</p></td>
+            <td colspan="1" rowspan="1"><p>Possible Fix</p></td>
+          </tr>
+          <tr>
+            <td colspan="1" rowspan="1">
+              <p><code>flutter doctor</code> shows errors</p>
+            </td>
+            <td colspan="1" rowspan="1">
+              <p>Follow the exact instructions it shows, one at a time</p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="1" rowspan="1"><p>App crashes on model load</p></td>
+            <td colspan="1" rowspan="1">
+              <p>
+                Check that the model file path is correct and the file was
+                pushed successfully using <code>adb push</code>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="1" rowspan="1"><p>Very slow responses</p></td>
+            <td colspan="1" rowspan="1">
+              <p>
+                Use a smaller Gemma model variant, or test on a more powerful
+                device
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="1" rowspan="1"><p>Out of memory error</p></td>
+            <td colspan="1" rowspan="1">
+              <p>Close other apps, or use a smaller quantized model</p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="1" rowspan="1">
+              <p><code>flutter_gemma</code> methods not found</p>
+            </td>
+            <td colspan="1" rowspan="1">
+              <p>
+                Check the installed package version and refer to its example app
+                on pub.dev
+              </p>
+            </td>
+          </tr>
+        </table>
+      </google-codelab-step>
+
+      <google-codelab-step label="Summary and Next Steps" duration="1">
+        <p>Well done! In this codelab, you learned:</p>
+        <ul>
+          <li>How to install and set up Flutter</li>
+          <li>What Gemma is, and why small on-device AI models matter</li>
+          <li>What MediaPipe is, and how it helps run AI models inside apps</li>
+          <li>How to build a simple chat UI in Flutter</li>
+          <li>
+            How to connect Gemma to your app using the
+            <code>flutter_gemma</code> package
+          </li>
+          <li>
+            How to run a fully working, offline AI chatbot on your own device
+          </li>
+        </ul>
+        <h2 is-upgraded>What to Explore Next</h2>
+        <ul>
+          <li>
+            Try adding chat history that persists even after closing the app
+          </li>
+          <li>
+            Add support for streaming responses (showing text as it&#39;s
+            generated, word by word)
+          </li>
+          <li>Explore other Gemma model sizes for better speed or accuracy</li>
+          <li>
+            Learn about MediaPipe&#39;s other on-device AI solutions (like image
+            classification and object detection)
+          </li>
+        </ul>
+        <h2 is-upgraded>Stay Connected</h2>
+        <p>
+          If you enjoyed this workshop, connect with me on LinkedIn (QR code and
+          details in the first step) for more AI content, workshops, and
+          updates.
+        </p>
+        <p>Thank you for attending, and happy building!</p>
+      </google-codelab-step>
+    </google-codelab>
+
+    <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+    <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+    <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+    <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+    <script src="//support.google.com/inapp/api.js"></script>
+  </body>
+</html>
